@@ -48,20 +48,25 @@ app.use(methodOverride("_method"));
 app.use(flash());
 app.use(session(sessionConfig));
 
+// Passport configuration
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 // Routes
 
-app.get("/fakeuser", async (req, res) => {
-  const user = new User({ email: "fakeuser@gmail.com", username: "fakeuser" });
-  const newUser = await User.register(user, "fakepassword");
-  res.json(newUser);
-});
+// app.get("/fakeuser", async (req, res) => {
+//   const user = new User({ email: "fakeuser@gmail.com", username: "fakeuser" });
+//   const newUser = await User.register(user, "fakepassword");
+//   res.json(newUser);
+// });
 
 app.use((req, res, next) => {
+  // console.log(req.session);
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
