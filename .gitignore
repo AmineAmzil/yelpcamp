@@ -1,3 +1,6 @@
+#database
+database/mongodb/db/
+database/mongodb/mongod.log
 # Logs
 logs
 *.log

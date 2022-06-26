@@ -4,11 +4,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const { campgroundSchema, reviewSchema } = require("./schemas");
-const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
-const Review = require("./models/review");
-const Campground = require("./models/campground");
 const campgroundsRouter = require("./routes/campgroundsRouter");
 const reviewsRouter = require("./routes/reviewsRouter");
 const userRouter = require("./routes/usersRoutes");
@@ -65,7 +61,8 @@ passport.deserializeUser(User.deserializeUser());
 // });
 
 app.use((req, res, next) => {
-  // console.log(req.session);
+  // console.log("Intercepting a request from line 64");
+  // console.log(req.user);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -75,10 +72,6 @@ app.use((req, res, next) => {
 app.use("/", userRouter);
 app.use("/campgrounds", campgroundsRouter);
 app.use("/campgrounds/:id/reviews", reviewsRouter);
-
-app.get("/", (req, res) => {
-  res.render("home");
-});
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));

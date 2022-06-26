@@ -2,6 +2,8 @@ const Campground = require("../models/campground");
 
 module.exports.getAllCampgrounds = async (req, res) => {
   const campgrounds = await Campground.find().populate("owner");
+  // console.log(campgrounds);
+  // res.json(campgrounds);
   res.render("campgrounds/index", { campgrounds });
 };
 

@@ -5,6 +5,10 @@ const catchAsync = require("../utils/catchAsync");
 const passport = require("passport");
 const users = require("../controllers/users");
 
+router.get("/", (req, res) => {
+  res.render("home");
+});
+
 router.route("/register").get(users.getRegistrationPage).post(catchAsync(users.createUser));
 
 router
