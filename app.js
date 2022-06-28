@@ -1,6 +1,6 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");

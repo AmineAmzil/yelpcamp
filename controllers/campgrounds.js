@@ -27,8 +27,11 @@ module.exports.getCampgroundCreationPage = (req, res) => {
 
 module.exports.createNewCampground = async (req, res) => {
   const { campground } = req.body;
+  campground.images = req.files.map((file) => ({ url: file.path, filename: file.filename }));
+  campground.owner = req.user._id;
   const camp = new Campground(campground);
   await camp.save();
+  // console.log(camp);
   req.flash("success", "Successfuly made a new Campground");
   res.redirect(`/campgrounds/${camp._id}`);
 };
