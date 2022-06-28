@@ -1,8 +1,7 @@
 #multer
 uploads/
 #database
-database/mongodb/db/
-database/mongodb/mongod.log
+database/mongodb/*
 # Logs
 logs
 *.log
