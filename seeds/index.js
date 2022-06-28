@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Campground = require("../models/campground");
+const User = require("../models/user");
 const cities = require("./cities");
 const { places, descriptors } = require("./seedHelpers");
 require("dotenv").config();
@@ -17,11 +18,24 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 const seedDb = async () => {
   await Campground.deleteMany();
 
+  let superuser = await User.findOne({ $or: [{ email: "amine@gmail.com" }, { username: "amineamzil" }] });
+
+  if (!superuser) {
+    const u = {
+      email: "amine@gmail.com",
+      username: "aminemazil",
+      password: "password",
+    };
+    superuser = new User(u);
+    await superuser.save();
+  }
+  console.log({ superuser });
+
   for (let i = 0; i < 50; i++) {
     const random10000 = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 20) + 10;
     const camp = new Campground({
-      owner: "628f862d6ccbc93808f17712",
+      owner: superuser._id,
       title: `${sample(descriptors)}, ${sample(places)}`,
       images: [{ url: "https://source.unsplash.com/collection/483251", filename: "random" }],
       location: `${cities[random10000].city}, ${cities[random10000].state}`,
