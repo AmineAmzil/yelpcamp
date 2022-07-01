@@ -19,7 +19,7 @@ router.get("/:id/edit", isLoggedIn, isOwner, catchAsync(campgrounds.getCampgroun
 router
   .route("/:id")
   .get(catchAsync(campgrounds.getCampgroundById))
-  .put(isLoggedIn, isOwner, validateCampground, catchAsync(campgrounds.updateCampgroundById))
+  .put(isLoggedIn, isOwner, upload.array("image"), validateCampground, catchAsync(campgrounds.updateCampgroundById))
   .delete(isOwner, catchAsync(campgrounds.deleteCampgroundById));
 
 module.exports = router;
