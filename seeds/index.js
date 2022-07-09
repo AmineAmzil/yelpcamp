@@ -17,18 +17,16 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
 const seedDb = async () => {
   await Campground.deleteMany();
+  await User.deleteMany();
 
-  let superuser = await User.findOne({ $or: [{ email: "amine@gmail.com" }, { username: "amineamzil" }] });
+  const superuser = new User({
+    email: "amine@gmail.com",
+    username: "amineamzil",
+    password: "password",
+  });
 
-  if (!superuser) {
-    const u = {
-      email: "amine@gmail.com",
-      username: "aminemazil",
-      password: "password",
-    };
-    superuser = new User(u);
-    await superuser.save();
-  }
+  await User.register(superuser, "password");
+
   console.log({ superuser });
 
   for (let i = 0; i < 50; i++) {
