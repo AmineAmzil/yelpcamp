@@ -44,10 +44,21 @@ module.exports.getCampgroundEditPage = async (req, res) => {
 
 module.exports.updateCampgroundById = async (req, res) => {
   const { id } = req.params;
+  console.log(req.body);
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
   const images = req.files.map((file) => ({ url: file.path, filename: file.filename }));
   campground.images.push(...images);
-  campground.save();
+
+  console.log(req.body);
+  if (req.body.deleteImages) {
+    await campground.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    });
+    console.log(campground);
+  }
+
+  await campground.save();
+
   req.flash("success", "Successfuly edited the Campground");
   res.redirect(`/campgrounds/${id}`);
 };
